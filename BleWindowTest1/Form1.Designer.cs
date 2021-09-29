@@ -29,32 +29,25 @@ namespace BleWindowTest1
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbReceive = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbClient = new System.Windows.Forms.RadioButton();
             this.rbServer = new System.Windows.Forms.RadioButton();
             this.btnConnect = new System.Windows.Forms.Button();
-            this.tbtitle = new System.Windows.Forms.TextBox();
-            this.lbWrite = new System.Windows.Forms.ListBox();
+            this.tbText = new System.Windows.Forms.TextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.tbOutput = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lbReceive
-            // 
-            this.lbReceive.FormattingEnabled = true;
-            this.lbReceive.ItemHeight = 15;
-            this.lbReceive.Location = new System.Drawing.Point(12, 12);
-            this.lbReceive.Name = "lbReceive";
-            this.lbReceive.Size = new System.Drawing.Size(569, 259);
-            this.lbReceive.TabIndex = 0;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.rbClient);
             this.groupBox1.Controls.Add(this.rbServer);
-            this.groupBox1.Location = new System.Drawing.Point(622, 12);
+            this.groupBox1.Location = new System.Drawing.Point(544, 10);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(316, 108);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(276, 86);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "type";
@@ -62,20 +55,22 @@ namespace BleWindowTest1
             // rbClient
             // 
             this.rbClient.AutoSize = true;
-            this.rbClient.Location = new System.Drawing.Point(33, 33);
+            this.rbClient.Location = new System.Drawing.Point(29, 26);
+            this.rbClient.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rbClient.Name = "rbClient";
-            this.rbClient.Size = new System.Drawing.Size(62, 19);
+            this.rbClient.Size = new System.Drawing.Size(53, 16);
             this.rbClient.TabIndex = 2;
-            this.rbClient.TabStop = true;
             this.rbClient.Text = "client";
             this.rbClient.UseVisualStyleBackColor = true;
             // 
             // rbServer
             // 
             this.rbServer.AutoSize = true;
-            this.rbServer.Location = new System.Drawing.Point(33, 72);
+            this.rbServer.Checked = true;
+            this.rbServer.Location = new System.Drawing.Point(29, 58);
+            this.rbServer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rbServer.Name = "rbServer";
-            this.rbServer.Size = new System.Drawing.Size(68, 19);
+            this.rbServer.Size = new System.Drawing.Size(58, 16);
             this.rbServer.TabIndex = 2;
             this.rbServer.TabStop = true;
             this.rbServer.Text = "server";
@@ -83,40 +78,55 @@ namespace BleWindowTest1
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(778, 241);
+            this.btnConnect.Location = new System.Drawing.Point(681, 193);
+            this.btnConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(114, 30);
+            this.btnConnect.Size = new System.Drawing.Size(100, 24);
             this.btnConnect.TabIndex = 3;
-            this.btnConnect.Text = "connect";
+            this.btnConnect.Text = "장치조회";
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // tbtitle
+            // tbText
             // 
-            this.tbtitle.Location = new System.Drawing.Point(14, 310);
-            this.tbtitle.Name = "tbtitle";
-            this.tbtitle.Size = new System.Drawing.Size(566, 25);
-            this.tbtitle.TabIndex = 2;
+            this.tbText.Location = new System.Drawing.Point(12, 248);
+            this.tbText.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbText.Name = "tbText";
+            this.tbText.Size = new System.Drawing.Size(496, 21);
+            this.tbText.TabIndex = 2;
+            this.tbText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbText_KeyPress);
             // 
-            // lbWrite
+            // listBox1
             // 
-            this.lbWrite.FormattingEnabled = true;
-            this.lbWrite.ItemHeight = 15;
-            this.lbWrite.Location = new System.Drawing.Point(622, 147);
-            this.lbWrite.Name = "lbWrite";
-            this.lbWrite.Size = new System.Drawing.Size(315, 64);
-            this.lbWrite.TabIndex = 4;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 12;
+            this.listBox1.Location = new System.Drawing.Point(544, 118);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(276, 52);
+            this.listBox1.TabIndex = 4;
+            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
+            // 
+            // tbOutput
+            // 
+            this.tbOutput.Location = new System.Drawing.Point(12, 10);
+            this.tbOutput.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbOutput.Multiline = true;
+            this.tbOutput.Name = "tbOutput";
+            this.tbOutput.Size = new System.Drawing.Size(496, 218);
+            this.tbOutput.TabIndex = 2;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(956, 365);
-            this.Controls.Add(this.lbWrite);
+            this.ClientSize = new System.Drawing.Size(836, 292);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.tbtitle);
+            this.Controls.Add(this.tbOutput);
+            this.Controls.Add(this.tbText);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.lbReceive);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
@@ -127,14 +137,13 @@ namespace BleWindowTest1
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox lbReceive;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.RadioButton rbClient;
         private System.Windows.Forms.RadioButton rbServer;
-        private System.Windows.Forms.TextBox tbtitle;
-        private System.Windows.Forms.ListBox lbWrite;
+        private System.Windows.Forms.TextBox tbText;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.TextBox tbOutput;
     }
 }
 
