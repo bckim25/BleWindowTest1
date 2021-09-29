@@ -7,6 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+using InTheHand;
+using InTheHand.Net.Bluetooth;
+using InTheHand.Net.Ports;
+using InTheHand.Net.Sockets;
+using System.IO;
 
 
 
@@ -18,6 +24,31 @@ namespace BleWindowTest1
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            if (rbClient.Checked)
+            {
+                connectAsClient();
+            }
+            else
+            {
+                connectAsServer();
+            }
+        }
+
+
+        private void connectAsClient()
+        {
+
+
+
+        }
+
+        private void connectAsServer()
+        {
+
         }
     }
 }
