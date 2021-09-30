@@ -7,9 +7,7 @@ using System.Threading;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 using System.IO;
-
-
-
+using InTheHand.Net;
 
 namespace BleWindowTest1
 {
@@ -51,18 +49,31 @@ namespace BleWindowTest1
         BluetoothDeviceInfo[] devices;
         private void scan()
         {
-            
-
             updateUI("Starting Scan..");
+            items.Clear();
             BluetoothClient client = new BluetoothClient();
-            devices = client.DiscoverDevicesInRange();
+            /*devices = client.DiscoverDevicesInRange();*/
+            /*devices = client.DiscoverDevices();*/
+            devices = client.DiscoverDevices(10);
+
             updateUI("Scan Complete.");
             updateUI(devices.Length.ToString() + " devices discovered");
+            string deviceName;
+            string connected;
+            string rssi;
+            string deviceAddr;
+
             foreach(BluetoothDeviceInfo d in devices)
             {
-                items.Add(d.DeviceName);
-            }
+                deviceName = d.DeviceName;
+                connected = d.Connected.ToString();
+                rssi = d.Rssi.ToString();
+                deviceAddr = d.DeviceAddress.ToString();
 
+                items.Add(d.DeviceName+"("+connected+")" + " - addr: "+ deviceAddr);
+                Console.WriteLine("★★★ items : " + d.DeviceName);
+            }
+            
             updateDeviceList();
         }
 
@@ -79,6 +90,9 @@ namespace BleWindowTest1
 
         /*Guid mUUID = new Guid("00001101-0000-1000-8000-00805F9B34FB");*/
         Guid mUUID = new Guid("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
+        /*Guid mUUID = new Guid("6DAEA2BB-0642-4D03-92FE-B9A48885466F");*/
+        private static string Addr = "E4:C8:55:E8:84:28";
+        BluetoothAddress Address = BluetoothAddress.Parse(Addr);
         bool serverStarted = false;
 
         public void ServerConnectThread()
@@ -121,6 +135,7 @@ namespace BleWindowTest1
 
         private void updateDeviceList()
         {
+
             Func<int> del = delegate ()
             {
                 listBox1.DataSource = items;
@@ -175,9 +190,12 @@ namespace BleWindowTest1
         string myPin = "0000";
         private bool pairDevice()
         {
+            BluetoothDeviceInfo info = new BluetoothDeviceInfo(Address);
+
             if (!deviceInfo.Authenticated)
             {
-                if(!BluetoothSecurity.PairRequest(deviceInfo.DeviceAddress, myPin))
+                if (!BluetoothSecurity.PairRequest(deviceInfo.DeviceAddress, myPin))
+                /*if(!BluetoothSecurity.PairRequest(Address,myPin))*/
                 {
                     return false;
                 }

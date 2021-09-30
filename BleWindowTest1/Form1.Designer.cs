@@ -43,11 +43,11 @@ namespace BleWindowTest1
             // 
             this.groupBox1.Controls.Add(this.rbClient);
             this.groupBox1.Controls.Add(this.rbServer);
-            this.groupBox1.Location = new System.Drawing.Point(544, 10);
+            this.groupBox1.Location = new System.Drawing.Point(420, 10);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(276, 86);
+            this.groupBox1.Size = new System.Drawing.Size(400, 86);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "type";
@@ -55,30 +55,30 @@ namespace BleWindowTest1
             // rbClient
             // 
             this.rbClient.AutoSize = true;
+            this.rbClient.Checked = true;
             this.rbClient.Location = new System.Drawing.Point(29, 26);
             this.rbClient.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rbClient.Name = "rbClient";
-            this.rbClient.Size = new System.Drawing.Size(53, 16);
+            this.rbClient.Size = new System.Drawing.Size(61, 17);
             this.rbClient.TabIndex = 2;
+            this.rbClient.TabStop = true;
             this.rbClient.Text = "client";
             this.rbClient.UseVisualStyleBackColor = true;
             // 
             // rbServer
             // 
             this.rbServer.AutoSize = true;
-            this.rbServer.Checked = true;
             this.rbServer.Location = new System.Drawing.Point(29, 58);
             this.rbServer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rbServer.Name = "rbServer";
-            this.rbServer.Size = new System.Drawing.Size(58, 16);
+            this.rbServer.Size = new System.Drawing.Size(68, 17);
             this.rbServer.TabIndex = 2;
-            this.rbServer.TabStop = true;
             this.rbServer.Text = "server";
             this.rbServer.UseVisualStyleBackColor = true;
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(681, 193);
+            this.btnConnect.Location = new System.Drawing.Point(720, 245);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(100, 24);
@@ -92,7 +92,7 @@ namespace BleWindowTest1
             this.tbText.Location = new System.Drawing.Point(12, 248);
             this.tbText.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbText.Name = "tbText";
-            this.tbText.Size = new System.Drawing.Size(496, 21);
+            this.tbText.Size = new System.Drawing.Size(388, 21);
             this.tbText.TabIndex = 2;
             this.tbText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbText_KeyPress);
             // 
@@ -100,10 +100,10 @@ namespace BleWindowTest1
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(544, 118);
+            this.listBox1.Location = new System.Drawing.Point(420, 106);
             this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(276, 52);
+            this.listBox1.Size = new System.Drawing.Size(400, 124);
             this.listBox1.TabIndex = 4;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
             // 
@@ -113,7 +113,7 @@ namespace BleWindowTest1
             this.tbOutput.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbOutput.Multiline = true;
             this.tbOutput.Name = "tbOutput";
-            this.tbOutput.Size = new System.Drawing.Size(496, 218);
+            this.tbOutput.Size = new System.Drawing.Size(388, 218);
             this.tbOutput.TabIndex = 2;
             // 
             // Form1
