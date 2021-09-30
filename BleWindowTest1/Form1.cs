@@ -8,6 +8,7 @@ using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 using System.IO;
 using InTheHand.Net;
+using System.Net.Sockets;
 
 namespace BleWindowTest1
 {
@@ -52,9 +53,13 @@ namespace BleWindowTest1
             updateUI("Starting Scan..");
             items.Clear();
             BluetoothClient client = new BluetoothClient();
+            /*BluetoothComponent bluetoothComponent;*/
             /*devices = client.DiscoverDevicesInRange();*/
             /*devices = client.DiscoverDevices();*/
-            devices = client.DiscoverDevices(10);
+            devices = client.DiscoverDevices(50, false, false, true);
+
+            /*            bluetoothComponent = new BluetoothComponent(client);
+                        bluetoothComponent.DiscoverDevicesAsync(255, false, true, true, false, null);*/
 
             updateUI("Scan Complete.");
             updateUI(devices.Length.ToString() + " devices discovered");
@@ -165,9 +170,31 @@ namespace BleWindowTest1
 
         private void ClientConnectThread()
         {
-            BluetoothClient client = new BluetoothClient();
-            updateUI("attempting connect");
-            client.BeginConnect(deviceInfo.DeviceAddress, mUUID,this.BluetoothClientConnectCallback, client);
+            try
+            {
+                BluetoothClient client = new BluetoothClient();
+                updateUI("attempting connect");
+                client.BeginConnect(deviceInfo.DeviceAddress, mUUID, this.BluetoothClientConnectCallback, client);
+            }catch(SocketException ex)
+            {
+                string reason;
+                switch (ex.ErrorCode)
+                {
+                    case 10048:
+                        reason = "There is an existing connection to the remote Chat2 Service";
+                        break;
+                    case 10049:
+                        reason = "Chat2 Service not running on remote device";
+                        break;
+                    default:
+                        reason = null;
+                        break;
+                }
+                reason += "("+ex.ErrorCode.ToString()+")";
+                var msg = "Bluetooth connection failed: "+ex;
+                msg = reason + msg;
+            }
+
 
         }
 
