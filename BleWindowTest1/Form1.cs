@@ -56,7 +56,7 @@ namespace BleWindowTest1
             /*BluetoothComponent bluetoothComponent;*/
             /*devices = client.DiscoverDevicesInRange();*/
             /*devices = client.DiscoverDevices();*/
-            devices = client.DiscoverDevices(50, false, false, true);
+            devices = client.DiscoverDevices(50, true, true, true);
 
             /*            bluetoothComponent = new BluetoothComponent(client);
                         bluetoothComponent.DiscoverDevicesAsync(255, false, true, true, false, null);*/
