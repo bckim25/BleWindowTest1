@@ -56,12 +56,15 @@ namespace BleWindowTest1
             updateUI("Starting Scan..");
             items.Clear();
             BluetoothClient client = new BluetoothClient();
+            
+
+
             /*BluetoothComponent bluetoothComponent;*/
             /*devices = client.DiscoverDevicesInRange();*/
-            /*devices = client.DiscoverDevices();*/
-            client.InquiryLength = new TimeSpan(0, 0, 0, 10);
+            devices = client.DiscoverDevices();
+            /*client.InquiryLength = new TimeSpan(0, 0, 0, 10);*/
             
-            devices = client.DiscoverDevices(50, true, true, true).ToArray();
+            /*devices = client.DiscoverDevices(50, true, true, true).ToArray();*/
 
             /*            bluetoothComponent = new BluetoothComponent(client);
                         bluetoothComponent.DiscoverDevicesAsync(255, false, true, true, false, null);*/
