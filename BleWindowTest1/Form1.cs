@@ -53,10 +53,16 @@ namespace BleWindowTest1
             updateUI("Starting Scan..");
             items.Clear();
             BluetoothClient client = new BluetoothClient();
+            
+            
             /*BluetoothComponent bluetoothComponent;*/
             /*devices = client.DiscoverDevicesInRange();*/
             /*devices = client.DiscoverDevices();*/
+            
+            
             devices = client.DiscoverDevices(50, true, true, false).ToArray();
+
+
 
             /*            bluetoothComponent = new BluetoothComponent(client);
                         bluetoothComponent.DiscoverDevicesAsync(255, false, true, true, false, null);*/
@@ -78,21 +84,6 @@ namespace BleWindowTest1
                 items.Add(d.DeviceName + "(" + connected + ")" + " - addr: " + deviceAddr);
                 Console.WriteLine("★★★ items : " + d.DeviceName);
             }
-            /*            BluetoothDeviceInfo device = null;
-                        foreach(var dev in client.DiscoverDevices())
-                        {
-                            if (dev.DeviceName.Contains("PREFIX"))
-                            {
-                                deviceName = dev.DeviceName;
-                                connected = dev.Connected.ToString();
-                                rssi = dev.Rssi.ToString();
-                                deviceAddr = dev.DeviceAddress.ToString();
-
-                                items.Add(deviceName +"("+connected+")");
-                                device = dev;
-                            }
-                        }*/
-
 
 
             updateDeviceList();
