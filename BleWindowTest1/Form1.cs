@@ -10,6 +10,9 @@ using System.IO;
 using InTheHand.Net;
 using System.Net.Sockets;
 
+
+
+
 namespace BleWindowTest1
 {
     public partial class Form1 : Form
@@ -56,13 +59,15 @@ namespace BleWindowTest1
             /*BluetoothComponent bluetoothComponent;*/
             /*devices = client.DiscoverDevicesInRange();*/
             /*devices = client.DiscoverDevices();*/
-            devices = client.DiscoverDevices(50, true, true, false).ToArray();
+            client.InquiryLength = new TimeSpan(0, 0, 0, 10);
+            
+            devices = client.DiscoverDevices(50, true, true, true).ToArray();
 
             /*            bluetoothComponent = new BluetoothComponent(client);
                         bluetoothComponent.DiscoverDevicesAsync(255, false, true, true, false, null);*/
 
             updateUI("Scan Complete.");
-            /*updateUI(devices.Length.ToString() + " devices discovered");*/
+            updateUI(devices.Length.ToString() + " devices discovered");
             string deviceName;
             string connected;
             string rssi;
@@ -78,20 +83,7 @@ namespace BleWindowTest1
                 items.Add(d.DeviceName + "(" + connected + ")" + " - addr: " + deviceAddr);
                 Console.WriteLine("★★★ items : " + d.DeviceName);
             }
-            /*            BluetoothDeviceInfo device = null;
-                        foreach(var dev in client.DiscoverDevices())
-                        {
-                            if (dev.DeviceName.Contains("PREFIX"))
-                            {
-                                deviceName = dev.DeviceName;
-                                connected = dev.Connected.ToString();
-                                rssi = dev.Rssi.ToString();
-                                deviceAddr = dev.DeviceAddress.ToString();
 
-                                items.Add(deviceName +"("+connected+")");
-                                device = dev;
-                            }
-                        }*/
 
 
 
