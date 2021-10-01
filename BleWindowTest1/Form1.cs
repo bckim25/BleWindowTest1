@@ -56,29 +56,45 @@ namespace BleWindowTest1
             /*BluetoothComponent bluetoothComponent;*/
             /*devices = client.DiscoverDevicesInRange();*/
             /*devices = client.DiscoverDevices();*/
-            devices = client.DiscoverDevices(50, true, true, true);
+            devices = client.DiscoverDevices(50, true, true, false).ToArray();
 
             /*            bluetoothComponent = new BluetoothComponent(client);
                         bluetoothComponent.DiscoverDevicesAsync(255, false, true, true, false, null);*/
 
             updateUI("Scan Complete.");
-            updateUI(devices.Length.ToString() + " devices discovered");
+            /*updateUI(devices.Length.ToString() + " devices discovered");*/
             string deviceName;
             string connected;
             string rssi;
             string deviceAddr;
 
-            foreach(BluetoothDeviceInfo d in devices)
+            foreach (BluetoothDeviceInfo d in devices)
             {
                 deviceName = d.DeviceName;
                 connected = d.Connected.ToString();
                 rssi = d.Rssi.ToString();
                 deviceAddr = d.DeviceAddress.ToString();
 
-                items.Add(d.DeviceName+"("+connected+")" + " - addr: "+ deviceAddr);
+                items.Add(d.DeviceName + "(" + connected + ")" + " - addr: " + deviceAddr);
                 Console.WriteLine("★★★ items : " + d.DeviceName);
             }
-            
+            /*            BluetoothDeviceInfo device = null;
+                        foreach(var dev in client.DiscoverDevices())
+                        {
+                            if (dev.DeviceName.Contains("PREFIX"))
+                            {
+                                deviceName = dev.DeviceName;
+                                connected = dev.Connected.ToString();
+                                rssi = dev.Rssi.ToString();
+                                deviceAddr = dev.DeviceAddress.ToString();
+
+                                items.Add(deviceName +"("+connected+")");
+                                device = dev;
+                            }
+                        }*/
+
+
+
             updateDeviceList();
         }
 
@@ -215,6 +231,9 @@ namespace BleWindowTest1
         }
 
         string myPin = "0000";
+        /*
+         * Device pair 처리
+         */
         private bool pairDevice()
         {
             BluetoothDeviceInfo info = new BluetoothDeviceInfo(Address);
