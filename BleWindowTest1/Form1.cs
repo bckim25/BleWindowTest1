@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net.Sockets;
+using InTheHand.Bluetooth;
 using System.IO;
-using InTheHand.Net;
 using System.Net.Sockets;
 
 
@@ -56,18 +54,32 @@ namespace BleWindowTest1
             updateUI("Starting Scan..");
             items.Clear();
             BluetoothClient client = new BluetoothClient();
-            
+
 
 
             /*BluetoothComponent bluetoothComponent;*/
             /*devices = client.DiscoverDevicesInRange();*/
-            devices = client.DiscoverDevices();
+            /*devices = client.DiscoverDevices(255, false, true, true, false);*/
+
+            /*devices = client.DiscoverDevices(255,false,false,false,true);*/
+            /*devices = client.DiscoverDevices(255, false, false, true, true);*/
+            /*devices = client.DiscoverDevices(255, false, true, true, true);*/
+            /*devices = client.DiscoverDevices(255, true, true, true, true);*/
+            /*devices = client.DiscoverDevices(255, true, false, false, false);*/
+            /*devices = client.DiscoverDevices(255, true, true, false, false);*/
+            /*devices = client.DiscoverDevices(255, true, true, true, false);*/
+
+            /*devices = client.DiscoverDevices(255, true, false, true, false);*/
+            /*devices = client.DiscoverDevices(255, true, true, false);*/
+
             /*client.InquiryLength = new TimeSpan(0, 0, 0, 10);*/
-            
+
             /*devices = client.DiscoverDevices(50, true, true, true).ToArray();*/
 
             /*            bluetoothComponent = new BluetoothComponent(client);
                         bluetoothComponent.DiscoverDevicesAsync(255, false, true, true, false, null);*/
+            devices = client.DiscoverDevicesInRange();
+
 
             updateUI("Scan Complete.");
             updateUI(devices.Length.ToString() + " devices discovered");
