@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using InTheHand.Bluetooth;
-using System.IO;
-using System.Net.Sockets;
-
-
+using System.Threading.Tasks;
+using Windows.Devices.Bluetooth;
+using Windows.Devices.Bluetooth.GenericAttributeProfile;
+using Windows.Devices.Enumeration;
 
 
 namespace BleWindowTest1
@@ -16,6 +14,8 @@ namespace BleWindowTest1
     public partial class Form1 : Form
     {
         List<string> items;
+        static DeviceInformation device = null;
+
         public Form1()
         {
             items = new List<string>();
@@ -24,12 +24,6 @@ namespace BleWindowTest1
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (serverStarted)
-            {
-                updateUI("Server already started silly sausage!");
-                return;
-            }
-
 
             if (rbClient.Checked)
             {
@@ -48,37 +42,71 @@ namespace BleWindowTest1
             bluetoothScanThred.Start();
         }
 
-        BluetoothDeviceInfo[] devices;
+        private async Task show()
+        {
+            // Query for extra properties you want returned
+            string[] requestedProperties = { "System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected" };
+
+            DeviceWatcher deviceWatcher =
+                        DeviceInformation.CreateWatcher(
+                                BluetoothLEDevice.GetDeviceSelectorFromPairingState(false),
+                                requestedProperties,
+                                DeviceInformationKind.AssociationEndpoint);
+
+            // Register event handlers before starting the watcher.
+            // Added, Updated and Removed are required to get all nearby devices
+            deviceWatcher.Added += DeviceWatcher_Added;
+            deviceWatcher.Updated += DeviceWatcher_Updated;
+            deviceWatcher.Removed += DeviceWatcher_Removed;
+
+            // EnumerationCompleted and Stopped are optional to implement.
+            deviceWatcher.EnumerationCompleted += DeviceWatcher_EnumerationCompleted;
+            deviceWatcher.Stopped += DeviceWatcher_Stopped;
+
+            // Start the watcher.
+            deviceWatcher.Start();
+            while (true)
+            {
+                if (device == null)
+                {
+                    Thread.Sleep(500);
+                }
+                else
+                {
+                    Console.WriteLine("PRess Any to pair with Wahoo Ticker");
+                    Console.ReadKey();
+                    BluetoothLEDevice bluetoothLeDevice = await BluetoothLEDevice.FromIdAsync(device.Id);
+                    Console.WriteLine("Attempting to pair with device");
+                    GattDeviceServicesResult result = await bluetoothLeDevice.GetGattServicesAsync();
+
+                    if (result.Status == GattCommunicationStatus.Success)
+                    {
+                        Console.WriteLine("Pairing succeeded");
+                        var services = result.Services;
+                        foreach (var service in services)
+                        {
+                            Console.WriteLine(service.Uuid);
+                        }
+                    }
+                    Console.WriteLine("Press Any Key to Exit application");
+                    Console.ReadKey();
+                    break;
+                }
+
+            }
+        }
+
+
         private void scan()
         {
             updateUI("Starting Scan..");
             items.Clear();
-            BluetoothClient client = new BluetoothClient();
+
+            this.show();
 
 
 
-            /*BluetoothComponent bluetoothComponent;*/
-            /*devices = client.DiscoverDevicesInRange();*/
-            /*devices = client.DiscoverDevices(255, false, true, true, false);*/
-
-            /*devices = client.DiscoverDevices(255,false,false,false,true);*/
-            /*devices = client.DiscoverDevices(255, false, false, true, true);*/
-            /*devices = client.DiscoverDevices(255, false, true, true, true);*/
-            /*devices = client.DiscoverDevices(255, true, true, true, true);*/
-            /*devices = client.DiscoverDevices(255, true, false, false, false);*/
-            /*devices = client.DiscoverDevices(255, true, true, false, false);*/
-            /*devices = client.DiscoverDevices(255, true, true, true, false);*/
-
-            /*devices = client.DiscoverDevices(255, true, false, true, false);*/
-            /*devices = client.DiscoverDevices(255, true, true, false);*/
-
-            /*client.InquiryLength = new TimeSpan(0, 0, 0, 10);*/
-
-            /*devices = client.DiscoverDevices(50, true, true, true).ToArray();*/
-
-            /*            bluetoothComponent = new BluetoothComponent(client);
-                        bluetoothComponent.DiscoverDevicesAsync(255, false, true, true, false, null);*/
-            devices = client.DiscoverDevicesInRange();
+            /*devices = client.DiscoverDevicesInRange();
 
 
             updateUI("Scan Complete.");
@@ -97,12 +125,43 @@ namespace BleWindowTest1
 
                 items.Add(d.DeviceName + "(" + connected + ")" + " - addr: " + deviceAddr);
                 Console.WriteLine("★★★ items : " + d.DeviceName);
-            }
+            }*/
 
 
 
 
             updateDeviceList();
+        }
+
+        private void DeviceWatcher_Stopped(DeviceWatcher sender, object args)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DeviceWatcher_EnumerationCompleted(DeviceWatcher sender, object args)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DeviceWatcher_Removed(DeviceWatcher sender, DeviceInformationUpdate args)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DeviceWatcher_Updated(DeviceWatcher sender, DeviceInformationUpdate args)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DeviceWatcher_Added(DeviceWatcher sender, DeviceInformation args)
+        {
+            if(args.Name == "Nugawinder")
+            {
+                items.Add(args.Name);
+            }
+
+
+            //throw new NotImplementedException();
         }
 
         private void connectAsServer()
@@ -116,39 +175,15 @@ namespace BleWindowTest1
             throw new NotImplementedException();
         }
 
-        /*Guid mUUID = new Guid("00001101-0000-1000-8000-00805F9B34FB");*/
-        Guid mUUID = new Guid("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
-        /*Guid mUUID = new Guid("6DAEA2BB-0642-4D03-92FE-B9A48885466F");*/
-        private static string Addr = "E4:C8:55:E8:84:28";
-        BluetoothAddress Address = BluetoothAddress.Parse(Addr);
-        bool serverStarted = false;
+        
 
         public void ServerConnectThread()
         {
-            serverStarted = true;
+           
             updateUI("Server started, waiting for clients");
 
-            BluetoothListener blueListener = new BluetoothListener(mUUID);
-            blueListener.Start();
-            BluetoothClient conn = blueListener.AcceptBluetoothClient();
             updateUI("Client has connected");
 
-            Stream mStream = conn.GetStream();
-            while (true)
-            {
-                try
-                {
-                    //handel server connection
-                    byte[] received = new byte[1024];
-                    mStream.Read(received, 0, received.Length);
-                    updateUI("Received: " + Encoding.ASCII.GetString(received));
-                    byte[] sent = Encoding.ASCII.GetBytes("Hello World");
-                    mStream.Write(sent, 0, sent.Length);
-                }catch(IOException exception)
-                {
-                    updateUI("Client has disconnected!!!!");
-                }
-            }
         }
 
         private void updateUI(string message)
@@ -172,89 +207,16 @@ namespace BleWindowTest1
             Invoke(del);
         }
 
-        BluetoothDeviceInfo deviceInfo;
         private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            deviceInfo = devices.ElementAt(listBox1.SelectedIndex);
-            updateUI(deviceInfo.DeviceName + " was selected, attempting connect ");
-
-            if (pairDevice())
-            {
-                updateUI("device paired..");
-                updateUI("starting connect thread");
-                Thread bluetoothClientThread = new Thread(new ThreadStart(ClientConnectThread));
-                bluetoothClientThread.Start();
-            }
-            else
-            {
-                updateUI("Pair failed");
-            }
+            
         }
 
-        private void ClientConnectThread()
-        {
-            try
-            {
-                BluetoothClient client = new BluetoothClient();
-                updateUI("attempting connect");
-                client.BeginConnect(deviceInfo.DeviceAddress, mUUID, this.BluetoothClientConnectCallback, client);
-            }catch(SocketException ex)
-            {
-                string reason;
-                switch (ex.ErrorCode)
-                {
-                    case 10048:
-                        reason = "There is an existing connection to the remote Chat2 Service";
-                        break;
-                    case 10049:
-                        reason = "Chat2 Service not running on remote device";
-                        break;
-                    default:
-                        reason = null;
-                        break;
-                }
-                reason += "("+ex.ErrorCode.ToString()+")";
-                var msg = "Bluetooth connection failed: "+ex;
-                msg = reason + msg;
-            }
 
 
-        }
-
-        void BluetoothClientConnectCallback(IAsyncResult result)
-        {
-            BluetoothClient client = (BluetoothClient)result.AsyncState;
-            client.EndConnect(result);
-
-            Stream stream = client.GetStream();
-            stream.ReadTimeout = 1000;
-
-            while (true)
-            {
-                while (!ready) ;
-
-                stream.Write(message, 0, message.Length);
-            }
-        }
 
         string myPin = "0000";
-        /*
-         * Device pair 처리
-         */
-        private bool pairDevice()
-        {
-            BluetoothDeviceInfo info = new BluetoothDeviceInfo(Address);
 
-            if (!deviceInfo.Authenticated)
-            {
-                if (!BluetoothSecurity.PairRequest(deviceInfo.DeviceAddress, myPin))
-                /*if(!BluetoothSecurity.PairRequest(Address,myPin))*/
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
 
         bool ready = false;
         byte[] message;
